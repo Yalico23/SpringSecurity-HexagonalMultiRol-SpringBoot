@@ -1,11 +1,12 @@
 package com.msvc_test.domain.models;
 
-import lombok.Builder;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Getter
+@AllArgsConstructor
 @Builder
 @Setter
 public class ErrorResponse {
