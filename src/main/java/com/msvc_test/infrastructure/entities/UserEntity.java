@@ -41,6 +41,4 @@ public class UserEntity {
     private List<RolEntity> roles;
     @Column(name = "created_at", nullable = false)
     private LocalDate createdAt;
-    @Transient // No se mapea a la base de datos
-    private boolean isAdmin;
 }
