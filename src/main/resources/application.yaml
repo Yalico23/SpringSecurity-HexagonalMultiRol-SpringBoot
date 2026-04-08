@@ -18,6 +18,16 @@ spring:
 server:
   port: 8080
 
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    config-url: /v3/api-docs/swagger-config
+    url: /v3/api-docs
+    disable-swagger-default-url: true
+    operationsSorter: method
+
 logging:
   level:
     org.hibernate.SQL: DEBUG
