@@ -49,7 +49,7 @@ public class JwtValidationFilter extends BasicAuthenticationFilter {
                     .getPayload();
 
             String email = claims.getSubject();
-            Object roles = claims.get("roles");
+            Object roles = claims.get("authorities");
 
             Collection<? extends GrantedAuthority> authorities = Arrays.asList(new ObjectMapper()
                     .addMixIn(SimpleGrantedAuthority.class,SimpleGrantedAuthorityJsonCreator.class)
@@ -67,7 +67,5 @@ public class JwtValidationFilter extends BasicAuthenticationFilter {
             response.setStatus(HttpStatus.UNAUTHORIZED.value());
             response.setContentType(CONTENT_TYPE);
         }
-
-        chain.doFilter(request, response);
     }
 }
