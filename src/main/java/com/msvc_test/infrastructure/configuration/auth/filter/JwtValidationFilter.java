@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.msvc_test.infrastructure.configuration.auth.SimpleGrantedAuthorityJsonCreator;
 import com.msvc_test.infrastructure.configuration.auth.TokenJwtConfig;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -59,7 +60,7 @@ public class JwtValidationFilter extends BasicAuthenticationFilter {
             SecurityContextHolder.getContext().setAuthentication(authentication);
             chain.doFilter(request,response);
 
-        } catch (Exception e) {
+        } catch (JwtException e) {
             Map<String, String> body = new HashMap<>();
             body.put("error", e.getMessage());
             body.put("message", "Token is not valid");

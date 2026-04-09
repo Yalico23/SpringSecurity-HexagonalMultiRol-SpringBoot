@@ -8,22 +8,14 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@ControllerAdvice
+@RestControllerAdvice
 public class GlobalControllerAdvice {
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    @ExceptionHandler(Exception.class)
-    public ErrorResponse handleGeneralException(Exception exception) {
-        return ErrorResponse.builder()
-                .code(ErrorCatalog.INTERNAL_SERVER_ERROR.getCode())
-                .message(ErrorCatalog.INTERNAL_SERVER_ERROR.getMessage())
-                .details(List.of(exception.getMessage()))
-                .timestamp(LocalDateTime.now())
-                .build();
-    }
 
     // Para spring boot que usen @Valid
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -39,6 +31,18 @@ public class GlobalControllerAdvice {
                         .stream()
                         .map(error -> error.getField() + ": " + error.getDefaultMessage())
                         .toList())
+                .timestamp(LocalDate.now())
+                .build();
+    }
+
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(Exception.class)
+    public ErrorResponse handleGeneralException(Exception exception) {
+        return ErrorResponse.builder()
+                .code(ErrorCatalog.INTERNAL_SERVER_ERROR.getCode())
+                .message(ErrorCatalog.INTERNAL_SERVER_ERROR.getMessage())
+                .details(List.of(exception.getMessage()))
+                .timestamp(LocalDate.now())
                 .build();
     }
 }
