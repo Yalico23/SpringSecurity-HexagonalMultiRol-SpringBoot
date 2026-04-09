@@ -8,11 +8,13 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@ControllerAdvice
+@RestControllerAdvice
 public class GlobalControllerAdvice {
 
     // Para spring boot que usen @Valid
@@ -29,6 +31,7 @@ public class GlobalControllerAdvice {
                         .stream()
                         .map(error -> error.getField() + ": " + error.getDefaultMessage())
                         .toList())
+                .timestamp(LocalDate.now())
                 .build();
     }
 
@@ -39,7 +42,7 @@ public class GlobalControllerAdvice {
                 .code(ErrorCatalog.INTERNAL_SERVER_ERROR.getCode())
                 .message(ErrorCatalog.INTERNAL_SERVER_ERROR.getMessage())
                 .details(List.of(exception.getMessage()))
-                .timestamp(LocalDateTime.now())
+                .timestamp(LocalDate.now())
                 .build();
     }
 }
