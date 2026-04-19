@@ -1,5 +1,6 @@
 package com.msvc_test.infrastructure.entities;
 
+import com.fasterxml.jackson.databind.annotation.EnumNaming;
 import com.msvc_test.domain.models.TypeRols;
 import jakarta.persistence.*;
 import lombok.*;
@@ -20,6 +21,7 @@ public class RolEntity {
     @UuidGenerator
     @Column(name = "id", updatable = false, nullable = false)
     private UUID id;
+    @Enumerated(EnumType.STRING)
     @Column(name = "type_rols", nullable = false)
     private TypeRols typeRols;
 }
