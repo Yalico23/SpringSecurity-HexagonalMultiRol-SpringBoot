@@ -3,6 +3,7 @@ package com.msvc_test.infrastructure.configuration.auth.filter;
 import com.fasterxml.jackson.core.exc.StreamReadException;
 import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.msvc_test.infrastructure.configuration.auth.CustomUserDetails;
 import com.msvc_test.infrastructure.entities.UserEntity;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -16,17 +17,13 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import static com.msvc_test.infrastructure.configuration.auth.TokenJwtConfig.*;
 
 import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
@@ -61,12 +58,14 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
 
-        User user = (User) authResult.getPrincipal();
+        CustomUserDetails user = (CustomUserDetails) authResult.getPrincipal(); // Obtenemos el usuario autenticado a través del método getPrincipal() del objeto Authentication, y lo casteamos a CustomUserDetails para acceder a sus propiedades personalizadas, como el ID del usuario.
         String email = user.getUsername();
+        UUID id = user.getId();
         Collection<? extends GrantedAuthority> roles = authResult.getAuthorities();
         Claims claims = Jwts.claims()
                 .add("authorities", new ObjectMapper().writeValueAsString(roles))
                 .add("email", email)
+                .add("id", id)
                 .build();
 
         String token = Jwts.builder()
