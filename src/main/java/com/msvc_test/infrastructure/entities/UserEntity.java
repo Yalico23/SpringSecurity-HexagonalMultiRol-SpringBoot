@@ -1,12 +1,10 @@
 package com.msvc_test.infrastructure.entities;
 
-import com.msvc_test.domain.models.Rol;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UuidGenerator;
 
 import java.time.LocalDate;
@@ -41,4 +39,6 @@ public class UserEntity {
     private List<RolEntity> roles;
     @Column(name = "created_at", nullable = false)
     private LocalDate createdAt;
+    @Column(name = "active", nullable = false)
+    private boolean active;
 }

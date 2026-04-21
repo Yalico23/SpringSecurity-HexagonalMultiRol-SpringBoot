@@ -23,5 +23,5 @@ public class User {
     private List<Rol> roles;
     private LocalDate createdAt;
     private boolean admin;
-
+    private boolean active;
 }
