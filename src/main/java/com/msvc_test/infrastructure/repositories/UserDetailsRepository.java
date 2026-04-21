@@ -36,7 +36,7 @@ public class UserDetailsRepository implements UserDetailsService {
                 userEntity.getId(),
                 userEntity.getEmail(),
                 userEntity.getPassword(),
-                true,
+                userEntity.isActive(),
                 true,
                 true,
                 true,

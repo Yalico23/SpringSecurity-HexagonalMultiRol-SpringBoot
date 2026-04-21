@@ -50,6 +50,7 @@ public class JwtValidationFilter extends BasicAuthenticationFilter {
             String email = claims.getSubject();
             String id = claims.get("id", String.class); // Obtiene el ID del usuario desde los claims del token
             Object roles = claims.get("authorities");
+            boolean active = claims.get("active", Boolean.class);
 
             Collection<? extends GrantedAuthority> authorities = Arrays.asList(new ObjectMapper()
                     .addMixIn(SimpleGrantedAuthority.class,SimpleGrantedAuthorityJsonCreator.class)
@@ -59,7 +60,7 @@ public class JwtValidationFilter extends BasicAuthenticationFilter {
                     UUID.fromString(id),
                             email,
                     "",
-                    true,
+                    active,
                     true,
                     true,
                     true, authorities);
