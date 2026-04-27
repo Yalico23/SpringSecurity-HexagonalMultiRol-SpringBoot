@@ -1,21 +1,31 @@
 package com.msvc_test.infrastructure.controllers;
 
+import com.msvc_test.domain.exceptions.UserNotFoundException;
 import com.msvc_test.domain.models.ErrorCatalog;
 import com.msvc_test.domain.models.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RestControllerAdvice
 public class GlobalControllerAdvice {
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(UserNotFoundException.class)
+    public ErrorResponse handleUserNotFoundException(UserNotFoundException exception) {
+        return ErrorResponse.builder()
+                .code(ErrorCatalog.USER_NOT_FOUND.getCode())
+                .message(ErrorCatalog.USER_NOT_FOUND.getMessage())
+                .details(List.of(exception.getMessage()))
+                .timestamp(LocalDate.now())
+                .build();
+    }
 
     // Para spring boot que usen @Valid
     @ResponseStatus(HttpStatus.BAD_REQUEST)

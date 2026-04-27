@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +28,9 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(authService.createUser(userMapper.toModel(user)));
     }
 
+    /**
+     * Obtener la información del usuario actualmente autenticado, en argumentos
+     * */
     @GetMapping("/me")
     public ResponseEntity<?> getCurrentUser(@AuthenticationPrincipal CustomUserDetails user){
         return ResponseEntity.ok(Map.of(
@@ -35,11 +39,13 @@ public class UserController {
         ));
     }
 
-    // Ejemplo de endpoint protegido para crear un proyecto, solo accesible por usuarios con rol ADMIN NO ROLE_ADMIN
-//    @PreAuthorize("hasAuthority('ADMIN')")
-//    @PostMapping()
-//    public ResponseEntity<Project> responseEntity(@RequestBody Project project){
-//        return ResponseEntity.status(HttpStatus.CREATED).body(projectService.createProject(project));
-//    }
+    /**
+     * Usando SecurityUtils para obtener la información del usuario actualmente autenticado, desde el contexto de seguridad y no desde los argumentos del controlador
+     * */
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @GetMapping("/me/admin")
+    public ResponseEntity<?> responseEntity(){
+        return ResponseEntity.ok(authService.userInformation());
+    }
 
 }
