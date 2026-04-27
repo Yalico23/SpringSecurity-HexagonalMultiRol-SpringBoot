@@ -5,7 +5,8 @@ import lombok.Getter;
 @Getter
 public enum ErrorCatalog {
     INTERNAL_SERVER_ERROR("INTERNAL_SERVER_ERROR_004", "Un error inesperado ocurrió"),
-    INVALID_INPUTS("INVALID_INPUTS_001", "Los datos proporcionados son inválidos"),;
+    INVALID_INPUTS("INVALID_INPUTS_001", "Los datos proporcionados son inválidos"),
+    USER_NOT_FOUND("USER_NOT_FOUND_002", "El usuario no fue encontrado");
 
     private final String code;
     private final String message;
